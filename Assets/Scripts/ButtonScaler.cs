@@ -17,7 +17,7 @@ public class ButtonScaler : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private void Awake()
     {
-        _defaultScale = transform.position;
+        _defaultScale = transform.localScale;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

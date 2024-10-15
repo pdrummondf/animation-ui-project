@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using NaughtyAttributes;
 using DG.Tweening;
 
@@ -16,6 +17,8 @@ namespace Screens
     {
         public ScreenType screenType;
 
+        public Image uiBackground;
+
         public List<Transform> ListaObjetos;
         public List<Typer> ListaFrases;
 
@@ -26,14 +29,14 @@ namespace Screens
         public float delayEntreObjetos = .05f;
 
         [Button]
-        protected virtual void Show()
+        public virtual void Show()
         {
             MostrarObjetos();
             Debug.Log("Show");
         }
 
         [Button]
-        protected virtual void Hide()
+        public virtual void Hide()
         {
             EsconderObjetos();
             Debug.Log("Hide");
@@ -42,10 +45,12 @@ namespace Screens
         private void EsconderObjetos()
         {
             ListaObjetos.ForEach(x => x.gameObject.SetActive(false));
+            uiBackground.enabled = false;
         }
 
         private void MostrarObjetos()
         {
+            ResetUiElements();
             for (int i = 0; i < ListaObjetos.Count; i++)
             {
                 var item = ListaObjetos[i];
@@ -54,6 +59,7 @@ namespace Screens
             }
 
             Invoke(nameof(StartType), delayEntreObjetos * ListaObjetos.Count);
+            uiBackground.enabled = true;
         }
 
         private void StartType()
@@ -67,6 +73,20 @@ namespace Screens
         private void ForceMostrarObjetos()
         {
             ListaObjetos.ForEach(x => x.gameObject.SetActive(true));
+            uiBackground.enabled = true;
+        }
+
+        public void ResetUiElements()
+        {
+            ListaObjetos.ForEach(x => x.localScale = Vector3.one);
+        }
+
+        private void Start()
+        {
+            if (startHidden)
+            {
+                Hide();
+            }
         }
 
     }
